@@ -1,0 +1,110 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.zmiter</groupId>
+    <artifactId>moneytrackerdb</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>moneytrackerdb</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <postgre.driver.version>42.2.5</postgre.driver.version>
+        <liquibase.version>3.5.3</liquibase.version>
+        <liquibase.changeLogFile>liquibase/changelog.xml</liquibase.changeLogFile>
+        <liquibase.properties>liquibase/liquibase.properties</liquibase.properties>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgre.driver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <propertyFile>${liquibase.properties}</propertyFile>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                    <verbose>true</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+   
+    <profiles>
+        <!--
+        ###########
+        # Local Environment
+        ###########
+        -->
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>environment.type</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <database.driverClassName>org.postgresql.Driver</database.driverClassName>
+                <database.url>jdbc:postgresql://localhost:5432/moneytracker</database.url>
+                <database.username>postgres</database.username>
+                <database.password></database.password>
+            </properties>
+        </profile>
+
+        <!--
+        ###########
+        # Heroku Environment
+        ###########
+        -->
+        <profile>
+            <id>heroku</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>environment.type</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <database.driverClassName>org.postgresql.Driver</database.driverClassName>
+                <database.url></database.url>
+                <database.username></database.username>
+                <database.password></database.password>
+            </properties>
+        </profile>
+
+    </profiles>
+</project>
