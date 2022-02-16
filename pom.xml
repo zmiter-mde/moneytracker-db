@@ -14,7 +14,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <postgre.driver.version>42.2.5</postgre.driver.version>
+        <postgre.driver.version>42.3.3</postgre.driver.version>
         <liquibase.version>3.5.3</liquibase.version>
         <liquibase.changeLogFile>liquibase/changelog.xml</liquibase.changeLogFile>
         <liquibase.properties>liquibase/liquibase.properties</liquibase.properties>
